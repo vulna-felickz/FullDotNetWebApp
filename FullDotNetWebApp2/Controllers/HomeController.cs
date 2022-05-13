@@ -17,6 +17,7 @@ namespace FullDotNetWebApp2.Controllers
         public ActionResult About(string sql)
         {
             sql = sql;           
+            //Add LOC for comment to see what happens to vuln?
             new SqlCommand(sql);
             ViewBag.Message = "Your application description page.";
 
