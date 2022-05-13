@@ -17,7 +17,7 @@ namespace FullDotNetWebApp2.Controllers
         public ActionResult About(string sql)
         {
             sql = sql;
-            new SqlCommand(sql);
+            //new SqlCommand(sql);
             ViewBag.Message = "Your application description page.";
 
             return View();
