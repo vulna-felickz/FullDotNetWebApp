@@ -29,7 +29,8 @@ jobs:
       contents: read
       security-events: write
     env:
-      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
+      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'         
+      CODEQL_EXTRACTOR_CSHARP_OPTION_CIL: false
 
     strategy:
       fail-fast: false
