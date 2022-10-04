@@ -35,6 +35,11 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'csharp', 'javascript' ]
+        os: [ 'windows-2019', 'windows-2022' ]
+        exclude:
+          # only worried about C# in matrix... run Javascript only once
+          - os: windows-2019
+            language: javascript
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
