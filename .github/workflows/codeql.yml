@@ -77,8 +77,8 @@ jobs:
       uses: NuGet/setup-nuget@v1
 
     - run: |
-      nuget restore .\FullDotNetWebApp.sln -DisableParallelProcessing
-      msbuild .\FullDotNetWebApp.sln /p:UseSharedCompilation=false /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:MvcBuildViews=true
+        nuget restore .\FullDotNetWebApp.sln -DisableParallelProcessing
+        msbuild .\FullDotNetWebApp.sln /p:UseSharedCompilation=false /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:MvcBuildViews=true
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
