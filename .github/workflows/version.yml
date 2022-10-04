@@ -1,0 +1,15 @@
+name: Test PowerShell on Ubuntu
+on: workflow_dispatch
+jobs:
+  output-version:
+    name: Version Check
+    runs-on: windows-latest
+    steps:
+      - name: PS check installed msbuild versions via registry
+        shell: pwsh
+        run: |
+          dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: MSBUILD Version
+        shell: pwsh
+        run: |
+          msbuild -version
