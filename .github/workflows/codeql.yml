@@ -70,11 +70,17 @@ jobs:
 
     #   If the Autobuild fails above, remove it and uncomment the following three lines. 
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
+    #- name: Setup MSBuild
+    #  uses: microsoft/setup-msbuild@v1
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
+    #- name: Setup NuGet
+    
+    #  uses: NuGet/setup-nuget@v1
+      
+    - name: setup .NET
+      uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '4.6.1'
 
     - run: |
         nuget restore .\FullDotNetWebApp.sln -DisableParallelProcessing
