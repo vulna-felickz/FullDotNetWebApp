@@ -29,7 +29,8 @@ jobs:
       contents: read
       security-events: write
     env:
-      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
+      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'         
+      CODEQL_EXTRACTOR_CSHARP_OPTION_CIL: false
 
     strategy:
       fail-fast: false
@@ -47,6 +48,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
+        tools: latest
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
