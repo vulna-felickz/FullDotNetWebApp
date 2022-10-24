@@ -12,9 +12,28 @@ jobs:
         shell: pwsh
         run: |
           dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: MSBUILD Version
+        shell: pwsh
+        run: |
+          msbuild -version
       - name: Setup MSBUILD
         uses: microsoft/setup-msbuild@v1.1
-      - name: MSBUILD Version
+      - name: PS check installed msbuild versions via registry after setup-msbuild
+        shell: pwsh
+        run: |
+          dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: MSBUILD Version after setup-msbuild
+        shell: pwsh
+        run: |
+          msbuild -version
+      - name: Install 4.6.2
+        run: |
+          choco install netfx-4.6.2-devpack
+      - name: PS check installed msbuild versions via registry after .net 4.6.2 install
+        shell: pwsh
+        run: |
+          dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: MSBUILD Version after .net 4.6.2 install
         shell: pwsh
         run: |
           msbuild -version
