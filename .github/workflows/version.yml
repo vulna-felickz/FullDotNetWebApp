@@ -12,10 +12,11 @@ jobs:
         shell: pwsh
         run: |
           dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
-      - name: MSBUILD Version
-        shell: pwsh
-        run: |
-          msbuild -version
+      # YOU MUST FIRST RUN SETUP-MSBUILD 
+      # - name: MSBUILD Version
+      #  shell: pwsh
+      #  run: |
+      #    msbuild -version
       - name: Setup MSBUILD
         uses: microsoft/setup-msbuild@v1.1
       - name: PS check installed msbuild versions via registry after setup-msbuild
@@ -33,6 +34,8 @@ jobs:
         shell: pwsh
         run: |
           dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: Setup MSBUILD
+        uses: microsoft/setup-msbuild@v1.1
       - name: MSBUILD Version after .net 4.6.2 install
         shell: pwsh
         run: |
