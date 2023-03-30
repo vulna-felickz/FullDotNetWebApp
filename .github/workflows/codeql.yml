@@ -63,6 +63,14 @@ jobs:
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
 
+    # Discover where the MSBuild tool is and automatically add it to the PATH environment variable
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    # Download/installs a given version of NuGet.exe. Using this action will add nuget to your $PATH
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+
     - name: Build
       run: |
         nuget restore FullDotNetWebApp.sln
