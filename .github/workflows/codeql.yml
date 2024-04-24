@@ -51,17 +51,17 @@ jobs:
 
     # Discover where the MSBuild tool is and automatically add it to the PATH environment variable
     - name: Setup MSBuild
-      if: matrix.build-mode == 'csharp'
+      if: matrix.language == 'csharp'
       uses: microsoft/setup-msbuild@v1
 
     # Download/installs a given version of NuGet.exe. Using this action will add nuget to your $PATH
     - name: Setup NuGet
-      if: matrix.build-mode == 'csharp'
+      if: matrix.language == 'csharp'
       uses: NuGet/setup-nuget@v1
     
 
     - name: Build + Publish
-      if: matrix.build-mode == 'csharp'
+      if: matrix.language == 'csharp'
       run: |
         mkdir publish
         msbuild FullDotNetWebApp.sln /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="./publish"
