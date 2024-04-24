@@ -63,6 +63,7 @@ jobs:
     - name: Build + Publish
       if: matrix.language == 'csharp'
       run: |
+        nuget restore FullDotNetWebApp.sln
         mkdir publish
         msbuild FullDotNetWebApp.sln /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="./publish"
 
