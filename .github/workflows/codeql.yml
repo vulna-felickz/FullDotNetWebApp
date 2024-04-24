@@ -17,8 +17,8 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    env:
-      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
+    #env:
+      #CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
 
     strategy:
       fail-fast: false
@@ -49,8 +49,19 @@ jobs:
     # - name: Autobuild
     #   uses: github/codeql-action/autobuild@v2
 
+    # Discover where the MSBuild tool is and automatically add it to the PATH environment variable
+    - name: Setup MSBuild
+      if: matrix.build-mode == 'csharp'
+      uses: microsoft/setup-msbuild@v1
+
+    # Download/installs a given version of NuGet.exe. Using this action will add nuget to your $PATH
+    - name: Setup NuGet
+      if: matrix.build-mode == 'csharp'
+      uses: NuGet/setup-nuget@v1
+    
+
     - name: Build + Publish
-      if: ${{ matrix.language }} == csharp
+      if: matrix.build-mode == 'csharp'
       run: |
         mkdir publish
         msbuild FullDotNetWebApp.sln /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="./publish"
