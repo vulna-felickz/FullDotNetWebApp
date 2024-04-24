@@ -1,0 +1,20 @@
+name: MsBuild Check
+on: workflow_dispatch
+jobs:
+  output-version:    
+    strategy:
+      matrix:
+        os: ['windows-2019','windows-2022']
+    name: Version Check
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: PS check installed msbuild versions via registry
+        shell: pwsh
+        run: |
+          dir HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\
+      - name: Setup MSBUILD
+        uses: microsoft/setup-msbuild@v1.1
+      - name: MSBUILD Version
+        shell: pwsh
+        run: |
+          msbuild -version

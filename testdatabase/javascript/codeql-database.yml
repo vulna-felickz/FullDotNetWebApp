@@ -1,0 +1,40 @@
+---
+sourceLocationPrefix: C:\repos\vulna-felickz\FullDotNetWebApp
+baselineLinesOfCode: 119884
+unicodeNewlines: true
+columnKind: utf16
+primaryLanguage: javascript
+inProgress:
+  primaryLanguage: javascript
+  installedExtractors:
+    cpp:
+     - C:/Utils/codeql/cpp
+    csharp:
+     - C:/Utils/codeql/csharp
+    csv:
+     - C:/Utils/codeql/csv
+    go:
+     - C:/Utils/codeql/go
+    html:
+     - C:/Utils/codeql/html
+    java:
+     - C:/Utils/codeql/java
+    javascript:
+     - C:/Utils/codeql/javascript
+    properties:
+     - C:/Utils/codeql/properties
+    python:
+     - C:/Utils/codeql/python
+    ruby:
+     - C:/Utils/codeql/ruby
+    swift:
+     - C:/Utils/codeql/swift
+    xml:
+     - C:/Utils/codeql/xml
+    yaml:
+     - C:/Utils/codeql/yaml
+creationMetadata:
+  sha: 03399090cbacf8675860599bab164758021c9f74
+  cliVersion: 2.15.0
+  creationTime: 2024-01-17T00:35:58.183367600Z
+finalised: false
