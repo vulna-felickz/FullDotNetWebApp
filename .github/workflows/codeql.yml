@@ -23,7 +23,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       actions: read
       contents: read
@@ -35,6 +35,15 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'csharp', 'javascript' ]
+        os: [ 'windows-2019', 'windows-2022' ]
+        autobuild: ['true', 'false']
+        exclude:
+          # only worried about C# in matrix... run Javascript only once (this is a partial match so will exlcude autobuilds
+          - os: windows-2019
+            language: javascript
+          - os: windows-2022
+            language: javascript
+            autobuild: true
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
@@ -58,6 +67,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
+      if: ${{ matrix.autobuild == 'true' && matrix.language == 'csharp' }}
       uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
@@ -65,11 +75,26 @@ jobs:
 
     #   If the Autobuild fails above, remove it and uncomment the following three lines. 
     #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    - name: Setup MSBuild
+      if: ${{ matrix.autobuild == 'false' && matrix.language == 'csharp' }}
+      uses: microsoft/setup-msbuild@v1
 
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+    - name: Setup NuGet
+      if: ${{ matrix.autobuild == 'false' && matrix.language == 'csharp' }}
+      uses: NuGet/setup-nuget@v1
+      
+    #- name: setup .NET
+    #  if: ${{ matrix.autobuild == 'false' && matrix.language == 'csharp' }}
+    #  uses: actions/setup-dotnet@v3
+    #  with:
+    #      dotnet-version: '4.6.1'
 
+    - name: manual build
+      if: ${{ matrix.autobuild == 'false' && matrix.language == 'csharp' }}
+      run: |
+        nuget restore .\FullDotNetWebApp.sln -DisableParallelProcessing
+        msbuild .\FullDotNetWebApp.sln /p:UseSharedCompilation=false /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:MvcBuildViews=true
+      
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
