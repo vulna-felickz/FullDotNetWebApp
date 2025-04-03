@@ -1,15 +1,4 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-#
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
-#
-name: "CodeQL"
+name: "CodeQL - Advanced"
 
 on:
   push:
@@ -28,8 +17,8 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    env:
-      CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
+    #env:
+      #CODEQL_ACTION_EXTRA_OPTIONS: '{"database": {"run-queries": ["--off-heap-ram=0"]}}'
 
     strategy:
       fail-fast: false
@@ -57,18 +46,26 @@ jobs:
         
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    # - name: Autobuild
+    #   uses: github/codeql-action/autobuild@v2
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    # Discover where the MSBuild tool is and automatically add it to the PATH environment variable
+    - name: Setup MSBuild
+      if: matrix.language == 'csharp'
+      uses: microsoft/setup-msbuild@v1
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines. 
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    # Download/installs a given version of NuGet.exe. Using this action will add nuget to your $PATH
+    - name: Setup NuGet
+      if: matrix.language == 'csharp'
+      uses: NuGet/setup-nuget@v1
+    
 
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+    - name: Build + Publish
+      if: matrix.language == 'csharp'
+      run: |
+        nuget restore FullDotNetWebApp.sln
+        mkdir publish
+        msbuild FullDotNetWebApp.sln /t:rebuild /p:Platform="Any CPU" /p:Configuration="Debug" /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="./publish"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
