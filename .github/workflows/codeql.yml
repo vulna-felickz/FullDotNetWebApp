@@ -57,18 +57,24 @@ jobs:
         
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    #- name: Autobuild
+    #  uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines. 
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    # Discover where the MSBuild tool is and automatically add it to the PATH environment variable
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
 
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+    # Download/installs a given version of NuGet.exe. Using this action will add nuget to your $PATH
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1
+
+    - name: Build
+      run: |
+        nuget restore FullDotNetWebApp.sln
+        msbuild FullDotNetWebApp.sln
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
